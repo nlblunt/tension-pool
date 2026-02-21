@@ -442,7 +442,7 @@ async function rollpool(dice, message, dicesize) {
                 outcometext += '<img src="modules/tension-pool/images/Danger_black.webp" alt="!" width="25" height="25" style="border: none; margin: 0 2px;">'
                 rolltext += '<li class="roll die ' + dicesize + ' min">!</li>'
             } else {
-                outcometext += '<img src="modules/tension-pool/images/EmptyDie.webp" alt="-" width="25" height="25" style="border: none; margin: 0 2px;">'
+                outcometext += '<img src="modules/tension-pool/images/tensiontimer1.webp" alt="-" width="25" height="25" style="border: none; margin: 0 2px;">'
                 rolltext += '<li class="roll die ' + dicesize + '">&nbsp;</li>'
             }
         }
