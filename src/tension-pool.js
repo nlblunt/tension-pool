@@ -135,6 +135,21 @@ Hooks.on("ready", () => {
 
     console.log('tension-pool | Ready');
 
+    // Listen for Quick-Roll Table clicks in chat cards
+    Hooks.on("renderChatMessage", (message, html, data) => {
+        html.find(".tp-rolltable-btn").click(ev => {
+            ev.preventDefault();
+            const tableName = ev.currentTarget.dataset.tableName;
+            if (tableName) {
+                const table = game.tables.getName(tableName);
+                if (table) {
+                    table.draw();
+                } else {
+                    ui.notifications.warn(`Tension Pool | RollTable "${tableName}" not found.`);
+                }
+            }
+        });
+    });
 
 });
 
@@ -482,6 +497,14 @@ async function rollpool(dice, message, dicesize) {
                 </div>
             </div>`
 
+        let rollTableName = game.settings.get("tension-pool", "RollTableName");
+        if (complication && rollTableName !== "") {
+            mess += `<div style="margin-top: 5px; text-align: center;">
+                        <button class="tp-rolltable-btn" data-table-name="${rollTableName}" style="background: rgba(150, 0, 0, 0.2); border: 1px solid #900; color: #f0f0e0; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-weight: bold;">
+                            <i class="fas fa-list"></i> Roll ${rollTableName}
+                        </button>
+                    </div>`;
+        }
 
         sendresult(mess)
     }
@@ -632,6 +655,14 @@ async function rollpoolandretain(dice, message, dicesize) {
                 </div>
             </div>`
 
+        let rollTableName = game.settings.get("tension-pool", "RollTableName");
+        if (complication && rollTableName !== "") {
+            mess += `<div style="margin-top: 5px; text-align: center;">
+                        <button class="tp-rolltable-btn" data-table-name="${rollTableName}" style="background: rgba(150, 0, 0, 0.2); border: 1px solid #900; color: #f0f0e0; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-weight: bold;">
+                            <i class="fas fa-list"></i> Roll ${rollTableName}
+                        </button>
+                    </div>`;
+        }
 
         sendresult(mess)
     }

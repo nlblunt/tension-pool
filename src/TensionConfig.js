@@ -16,8 +16,12 @@ export class TensionConfig extends FormApplication {
     }
 
     async getData(options) {
-        let macronames= game.macros.map(x=>x.name);
-        macronames= macronames.map(x => ({key: x, label: x}));
+        let macronames = game.macros.map(x => x.name);
+        macronames = macronames.map(x => ({ key: x, label: x }));
+
+        let tablenames = game.tables.map(x => x.name);
+        tablenames = tablenames.map(x => ({ key: x, label: x }));
+        tablenames.unshift({ key: "", label: "--- None ---" });
 
         let data = {
             maxdiceinpool: game.settings.get('tension-pool', 'maxdiceinpool'),
@@ -49,7 +53,9 @@ export class TensionConfig extends FormApplication {
             PauseOnComplication: game.settings.get('tension-pool', 'PauseOnComplication'),
             MacroOnComplication: game.settings.get('tension-pool', 'MacroOnComplication'),
             MacroName: game.settings.get('tension-pool', 'MacroName'),
-            MacroOptions:macronames,
+            MacroOptions: macronames,
+            RollTableName: game.settings.get('tension-pool', 'RollTableName'),
+            RollTableOptions: tablenames,
             outputsum: game.settings.get('tension-pool', 'outputsum'),
             scenecontrols: game.settings.get('tension-pool', 'scenecontrols'),
             scenecontrolRemove: game.settings.get('tension-pool', 'scenecontrolRemove'),
@@ -77,15 +83,15 @@ export class TensionConfig extends FormApplication {
 
             let oldval = await game.settings.get('tension-pool', k)
             await game.settings.set('tension-pool', k, v);
-            if (v!==oldval){
-                if (k.search("scenecontrol")>=0){
-                    reset=true
-                } else if (k.search("VisualDiceEffects")>=0){
-                    reset=true
+            if (v !== oldval) {
+                if (k.search("scenecontrol") >= 0) {
+                    reset = true
+                } else if (k.search("VisualDiceEffects") >= 0) {
+                    reset = true
                 }
             }
         }
-        if (reset===true){
+        if (reset === true) {
             location.reload();
         }
     }

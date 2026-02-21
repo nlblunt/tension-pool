@@ -19,7 +19,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "emptythepool", {
         name: "Empty the pool on non-full roll?",
-        hint:"Should the pool be emptied if it is rolled before Max Dice in Pool is reached.",
+        hint: "Should the pool be emptied if it is rolled before Max Dice in Pool is reached.",
         scope: "world",
         config: false,
         default: false,
@@ -28,7 +28,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "dropdie", {
         name: "Drop a die on add?",
-        hint:"Roll a die to demostrate it being added to the pool. (Result is ignored)",
+        hint: "Roll a die to demostrate it being added to the pool. (Result is ignored)",
         scope: "world",
         config: false,
         default: true,
@@ -38,7 +38,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "dicesize", {
         name: "Dice Size:",
-        hint:"d6 (!) will lock dice so nice to the uses of the tension pool dice set. Fate Die will always output the sum.",
+        hint: "d6 (!) will lock dice so nice to the uses of the tension pool dice set. Fate Die will always output the sum.",
         scope: "world",
         config: false,
         default: "dt",
@@ -60,7 +60,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "outputto", {
         name: "Where to announce updates:",
-        hint:"Pool Rolls outcomes are always output to chat.",
+        hint: "Pool Rolls outcomes are always output to chat.",
         scope: "world",
         config: false,
         default: "notifications",
@@ -92,7 +92,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "PauseDuringRoll", {
         name: "Pause During Pool Roll",
-        hint:"Pause the game while the pool is being rolled.",
+        hint: "Pause the game while the pool is being rolled.",
         scope: "world",
         config: false,
         default: true,
@@ -101,7 +101,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "PauseOnComplication", {
         name: "Pause On Complication",
-        hint:"Pause the game if a Complication is rolled.",
+        hint: "Pause the game if a Complication is rolled.",
         scope: "world",
         config: false,
         default: true,
@@ -110,7 +110,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "MacroOnComplication", {
         name: "Run Macro when Complication occurs:",
-        hint:"Enter name of Macro that should be run, leave blank to not run a macro. Macro name should be unique.",
+        hint: "Enter name of Macro that should be run, leave blank to not run a macro. Macro name should be unique.",
         scope: "world",
         config: false,
         default: false,
@@ -119,7 +119,16 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "MacroName", {
         name: "Run Macro when Complication occurs:",
-        hint:"Enter name of Macro that should be run, leave blank to not run a macro. Macro name should be unique.",
+        hint: "Enter name of Macro that should be run, leave blank to not run a macro. Macro name should be unique.",
+        scope: "world",
+        config: false,
+        default: "",
+        type: String,
+    });
+
+    game.settings.register("tension-pool", "RollTableName", {
+        name: "Quick-Roll Table when Complication occurs:",
+        hint: "Select a RollTable to show a quick roll button in chat when a complication occurs.",
         scope: "world",
         config: false,
         default: "",
@@ -128,7 +137,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "outputsum", {
         name: "Output sum?",
-        hint:"Replace calulation of the complication with a simple sum of the dice values.",
+        hint: "Replace calulation of the complication with a simple sum of the dice values.",
         scope: "world",
         config: false,
         default: false,
@@ -137,7 +146,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "secsautodiceadd", {
         name: "Number of seconds between auto adding dice",
-        hint:"For Simple Calendar Integration",
+        hint: "For Simple Calendar Integration",
         scope: "world",
         config: false,
         default: 600,
@@ -178,7 +187,7 @@ export const registerSettings = function () {
 
     game.settings.register("tension-pool", "scenecontrols", {
         name: "Enable Scene Controls?",
-        hint:"If off, other Scene Controls settings will be overridden",
+        hint: "If off, other Scene Controls settings will be overridden",
         scope: "world",
         config: false,
         default: true,
