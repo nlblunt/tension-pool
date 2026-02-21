@@ -499,7 +499,7 @@ async function rollpool(dice, message, dicesize) {
 
         let rollTableName = game.settings.get("tension-pool", "RollTableName");
         if (complication && rollTableName !== "") {
-            mess += `<div style="margin-top: 5px; text-align: center;">
+            mess += `<div style="margin-top: 5px; text-align: center;" data-visibility="gm">
                         <button class="tp-rolltable-btn" data-table-name="${rollTableName}" style="background: rgba(150, 0, 0, 0.2); border: 1px solid #900; color: #f0f0e0; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-weight: bold;">
                             <i class="fas fa-list"></i> Roll ${rollTableName}
                         </button>
@@ -657,7 +657,7 @@ async function rollpoolandretain(dice, message, dicesize) {
 
         let rollTableName = game.settings.get("tension-pool", "RollTableName");
         if (complication && rollTableName !== "") {
-            mess += `<div style="margin-top: 5px; text-align: center;">
+            mess += `<div style="margin-top: 5px; text-align: center;" data-visibility="gm">
                         <button class="tp-rolltable-btn" data-table-name="${rollTableName}" style="background: rgba(150, 0, 0, 0.2); border: 1px solid #900; color: #f0f0e0; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-weight: bold;">
                             <i class="fas fa-list"></i> Roll ${rollTableName}
                         </button>
