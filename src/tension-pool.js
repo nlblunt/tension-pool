@@ -456,16 +456,16 @@ async function rollpool(dice, message, dicesize) {
 
         mess += `<div class="dice-roll">
                     <div class="dice-result">
-                        <div class="dice-formula">`
+                        <div class="dice-formula">Tension: `
         mess += dice
-        mess += ` </div>
+        mess += `</div>
                         <div class="dice-tooltip" style="display: none;">
                             <section class="tooltip-part">
                                 <div class="dice">
                                     <header class="part-header flexrow">
-                                        <span class="part-formula">`
+                                        <span class="part-formula">Tension: `
         mess += dice
-        mess += ` dice in pool</span>
+        mess += `</span>
                                         <span class="part-total">` + compcount + `</span>
                                     </header>
                                     <ol class="dice-rolls">`
