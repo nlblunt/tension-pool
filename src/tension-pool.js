@@ -382,9 +382,11 @@ async function rollpool(dice, message, dicesize) {
     }
 
 
-    await updatedisplay(dice);
-    if (dice !== game.settings.get("tension-pool", 'diceinpool')) {
-        Hooks.call("tension-poolChange", dice);
+    let actualDice = game.settings.get("tension-pool", 'diceinpool');
+    await updatedisplay(actualDice);
+    if (actualDice !== dice) {
+        // Technically this hook is for when the pool changes size, but keeping legacy behavior
+        // We won't call it if we're just faking a 1-die roll
     }
 
     await sendmessage(message);
