@@ -467,11 +467,10 @@ async function rollpool(dice, message, dicesize) {
 
         let mess;
         if (complication) {
-            mess = game.settings.get("tension-pool", 'DangerMessage')
+            mess = game.settings.get("tension-pool", 'DangerMessage');
         } else {
-            mess = game.settings.get("tension-pool", 'SafeMessage')
+            mess = "The tension is rising...";
         }
-
 
         mess += `<div class="dice-roll">
                     <div class="dice-result">
@@ -505,6 +504,23 @@ async function rollpool(dice, message, dicesize) {
                         </button>
                     </div>`;
         }
+
+        let flavorTableName = game.settings.get("tension-pool", "FlavorTextRollTableName");
+        let flavorText = "Did you hear something...?";
+
+        if (flavorTableName !== "") {
+            const table = game.tables.getName(flavorTableName);
+            if (table) {
+                const tableRoll = await table.roll({ chatMessage: false });
+                if (tableRoll && tableRoll.results && tableRoll.results.length > 0) {
+                    flavorText = tableRoll.results[0].text;
+                }
+            } else {
+                ui.notifications.warn(`Tension Pool | Flavor Text RollTable "${flavorTableName}" not found.`);
+            }
+        }
+
+        mess += `<div style="margin-top: 8px; font-style: italic; text-align: center; color: var(--color-text-light-highlight);">${flavorText}</div>`;
 
         sendresult(mess)
     }
@@ -625,11 +641,10 @@ async function rollpoolandretain(dice, message, dicesize) {
 
         let mess;
         if (complication) {
-            mess = game.settings.get("tension-pool", 'DangerMessage')
+            mess = game.settings.get("tension-pool", 'DangerMessage');
         } else {
-            mess = game.settings.get("tension-pool", 'SafeMessage')
+            mess = "The tension is rising...";
         }
-
 
         mess += `<div class="dice-roll">
                     <div class="dice-result">
@@ -663,6 +678,23 @@ async function rollpoolandretain(dice, message, dicesize) {
                         </button>
                     </div>`;
         }
+
+        let flavorTableName = game.settings.get("tension-pool", "FlavorTextRollTableName");
+        let flavorText = "Did you hear something...?";
+
+        if (flavorTableName !== "") {
+            const table = game.tables.getName(flavorTableName);
+            if (table) {
+                const tableRoll = await table.roll({ chatMessage: false });
+                if (tableRoll && tableRoll.results && tableRoll.results.length > 0) {
+                    flavorText = tableRoll.results[0].text;
+                }
+            } else {
+                ui.notifications.warn(`Tension Pool | Flavor Text RollTable "${flavorTableName}" not found.`);
+            }
+        }
+
+        mess += `<div style="margin-top: 8px; font-style: italic; text-align: center; color: var(--color-text-light-highlight);">${flavorText}</div>`;
 
         sendresult(mess)
     }

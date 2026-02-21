@@ -135,6 +135,15 @@ export const registerSettings = function () {
         type: String,
     });
 
+    game.settings.register("tension-pool", "FlavorTextRollTableName", {
+        name: "Flavor Text Table:",
+        hint: "Select a RollTable to draw random flavor text under the dice results. Defaults to 'Did you hear something...?' if blank.",
+        scope: "world",
+        config: false,
+        default: "",
+        type: String,
+    });
+
     game.settings.register("tension-pool", "outputsum", {
         name: "Output sum?",
         hint: "Replace calulation of the complication with a simple sum of the dice values.",

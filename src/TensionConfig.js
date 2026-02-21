@@ -56,6 +56,7 @@ export class TensionConfig extends FormApplication {
             MacroOptions: macronames,
             RollTableName: game.settings.get('tension-pool', 'RollTableName'),
             RollTableOptions: tablenames,
+            FlavorTextRollTableName: game.settings.get('tension-pool', 'FlavorTextRollTableName'),
             outputsum: game.settings.get('tension-pool', 'outputsum'),
             scenecontrols: game.settings.get('tension-pool', 'scenecontrols'),
             scenecontrolRemove: game.settings.get('tension-pool', 'scenecontrolRemove'),
