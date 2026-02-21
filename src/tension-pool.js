@@ -216,15 +216,20 @@ class TensionPoolUI {
             if (game.user.isGM || game.user.role >= CONST.USER_ROLES.ASSISTANT) {
                 div.querySelector('#tp-btn-add').addEventListener('click', (e) => { e.stopPropagation(); adddie(); });
                 div.querySelector('#tp-btn-roll').addEventListener('click', (e) => { e.stopPropagation(); rollpool(game.settings.get("tension-pool", 'diceinpool'), "Dice Pool Rolled"); });
-                div.querySelector('#tp-btn-addroll').addEventListener('click', (e) => {
+                div.querySelector('#tp-btn-addroll').addEventListener('click', async (e) => {
                     e.stopPropagation();
                     let curDice = game.settings.get("tension-pool", 'diceinpool');
-                    // Add a die but don't automatically trigger the roll function twice if pool is full
-                    if (curDice < game.settings.get("tension-pool", 'maxdiceinpool') - 1) {
+                    let maxDice = game.settings.get("tension-pool", 'maxdiceinpool');
+
+                    if (curDice < maxDice - 1) {
+                        // Regular add & roll
                         game.settings.set("tension-pool", "diceinpool", curDice + 1);
                         rollpool(curDice + 1, "Die added and Pool Rolled");
                     } else {
-                        // Let `adddie` handle the natural overflow roll
+                        // Pool is at 5 out of 6
+                        // First: Roll the pool as the "Add & Roll" explicit command
+                        await rollpool(maxDice, "Add & Roll Triggered");
+                        // Second: Trigger the natural max-pool complication (Roll & Clear)
                         adddie();
                     }
                 });
