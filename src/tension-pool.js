@@ -439,9 +439,10 @@ async function rollpool(dice, message, dicesize) {
             if (outcome[i] === 1) {
                 complication = true
                 compcount += 1
-                outcometext += "!"
+                outcometext += '<img src="modules/tension-pool/images/Danger_black.webp" alt="!" width="25" height="25" style="border: none; margin: 0 2px;">'
                 rolltext += '<li class="roll die ' + dicesize + ' min">!</li>'
             } else {
+                outcometext += '<img src="modules/tension-pool/images/EmptyDie.webp" alt="-" width="25" height="25" style="border: none; margin: 0 2px;">'
                 rolltext += '<li class="roll die ' + dicesize + '">&nbsp;</li>'
             }
         }
