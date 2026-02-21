@@ -143,7 +143,7 @@ Hooks.on("ready", () => {
             if (tableName) {
                 const table = game.tables.getName(tableName);
                 if (table) {
-                    table.draw();
+                    table.draw({ rollMode: "gmroll" });
                 } else {
                     ui.notifications.warn(`Tension Pool | RollTable "${tableName}" not found.`);
                 }
