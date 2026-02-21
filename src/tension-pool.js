@@ -333,15 +333,15 @@ async function adddie(message = undefined, count = 1) {
 
     if (count === 1) {
         if (message === undefined) {
-            await sendmessage("Die Added to Pool (" + diceinpool + "/" + maxdiceinpool + ")")
+            await sendmessage("The tension is rising... (" + diceinpool + "/" + maxdiceinpool + ")")
         } else {
-            await sendmessage("Die Added to Pool (" + diceinpool + "/" + maxdiceinpool + ") " + message)
+            await sendmessage("The tension is rising... (" + diceinpool + "/" + maxdiceinpool + ") " + message)
         }
     } else {
         if (message === undefined) {
-            await sendmessage(count + " Dice Added to Pool (" + diceinpool + "/" + maxdiceinpool + ")")
+            await sendmessage("The tension is rising... [" + count + " Dice Added] (" + diceinpool + "/" + maxdiceinpool + ")")
         } else {
-            await sendmessage(count + " Dice Added to Pool (" + diceinpool + "/" + maxdiceinpool + ") " + message)
+            await sendmessage("The tension is rising... [" + count + " Dice Added] (" + diceinpool + "/" + maxdiceinpool + ") " + message)
         }
     }
 
