@@ -433,19 +433,20 @@ async function rollpool(dice, message, dicesize) {
         let compcount = 0
 
         let rolltext = ""
-        let outcometext = "&nbsp;"
+        let outcometext = `<div style="display: flex; justify-content: center; gap: 4px; padding: 4px 0;">`
 
         for (i = 0; i < outcome.length; i++) {
             if (outcome[i] === 1) {
                 complication = true
                 compcount += 1
-                outcometext += '<img src="modules/tension-pool/images/Danger_black.webp" alt="!" width="25" height="25" style="border: none; margin: 0 2px;">'
+                outcometext += '<img src="modules/tension-pool/images/Danger_black.webp" alt="!" width="28" height="28" style="border: none;">'
                 rolltext += '<li class="roll die ' + dicesize + ' min">!</li>'
             } else {
-                outcometext += '<img src="modules/tension-pool/images/tensiontimer1.webp" alt="-" width="25" height="25" style="border: none; margin: 0 2px;">'
+                outcometext += '<img src="modules/tension-pool/images/BlankDie.webp" alt="-" width="28" height="28" style="border: none;">'
                 rolltext += '<li class="roll die ' + dicesize + '">&nbsp;</li>'
             }
         }
+        outcometext += `</div>`
 
         let mess;
         if (complication) {
