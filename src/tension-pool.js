@@ -369,8 +369,8 @@ async function emptypool() {
 
 async function rollpool(dice, message, dicesize) {
     if (dice === 0) {
-        await sendmessage("Dice pool is empty and cannot be rolled")
-        return;
+        dice = 1;
+        message = "Rolled 1 Die (Empty Pool)";
     }
 
     let gamepausedalready;
