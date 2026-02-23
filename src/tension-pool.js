@@ -20,6 +20,13 @@ function messages(data) {
     if (data.datatype === "updatedisplay") {
         updatedisplay(data.message)
     }
+
+    if (data.datatype === "updatevisibility") {
+        let div = document.getElementById("tension-pool-ui");
+        if (div && !game.user.isGM) {
+            div.style.display = data.message ? "block" : "none";
+        }
+    }
 }
 
 function sendmessage(message) {
@@ -34,7 +41,7 @@ function sendmessage(message) {
     }
 
     if (outputto === 'both' || outputto === 'chatlog') {
-        ChatMessage.create({ content: message, speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" }) }, {});
+        ChatMessage.create({ content: `<span>${message}</span>`, speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" }) }, {});
     }
 }
 
@@ -108,7 +115,7 @@ Hooks.on("ready", () => {
             "<br>Scene controls are no longer supported by Tension Pool and have instead been replaced by macros performing the same behaviours.<br>" +
             "<br>This message will not be shown again until the next update.<br><br>" +
             "All the best,<br>SDoehren<br>Discord Server: https://discord.gg/QNQZwGGxuN"
-        ChatMessage.create({ whisper: ChatMessage.getWhisperRecipients("GM"), content: message, speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" }) }, {});
+        ChatMessage.create({ whisper: ChatMessage.getWhisperRecipients("GM"), content: `<span>${message}</span>`, speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" }) }, {});
         game.settings.set("tension-pool", "LatestVersion", game.modules.get("tension-pool").version)
     }
 
@@ -117,7 +124,7 @@ Hooks.on("ready", () => {
             let message = "Currently you do not have Dice So Nice installed but have the Visual Dice Effects Enabled.  Please install and enable Dice So Nice to use the visual effects."
             ChatMessage.create({
                 whisper: ChatMessage.getWhisperRecipients("GM"),
-                content: message,
+                content: `<span>${message}</span>`,
                 speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" })
             }, {});
         } else if (!game.modules.get("dice-so-nice").active) {
@@ -195,11 +202,18 @@ class TensionPoolUI {
 
         let gmControls = "";
         if (game.user.isGM || game.user.role >= CONST.USER_ROLES.ASSISTANT) {
+            let isVisible = game.settings.get("tension-pool", "ShowTrackerToPlayers");
+            let visIcon = isVisible ? "fa-eye" : "fa-eye-slash";
+            let visTitle = isVisible ? "Hide from Players" : "Show to Players";
+            let visText = isVisible ? "Shown" : "Hidden";
+
             gmControls = `<div style="display: flex; justify-content: flex-start; gap: 8px; margin-top: 5px; font-size: 14px;">
                 <button id="tp-btn-add" title="Add Die" style="background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; cursor: pointer; padding: 2px 5px; border-radius: 3px;"><i class="fas fa-plus"></i></button>
                 <button id="tp-btn-roll" title="Roll Pool" style="background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; cursor: pointer; padding: 2px 5px; border-radius: 3px;"><i class="fas fa-dice"></i></button>
                 <button id="tp-btn-addroll" title="Add & Roll" style="background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; cursor: pointer; padding: 2px 5px; border-radius: 3px;"><i class="fas fa-plus-square"></i> <i class="fas fa-dice"></i></button>
                 <button id="tp-btn-clear" title="Clear Pool" style="background: rgba(255,255,255,0.1); border: 1px solid #555; color: #fff; cursor: pointer; padding: 2px 5px; border-radius: 3px;"><i class="fas fa-trash"></i></button>
+                <div style="flex-grow: 1;"></div>
+                <button id="tp-btn-vis" title="${visTitle}" style="pointer-events: auto; background: rgba(255,255,255,0.1); border: 1px solid #555; color: ${isVisible ? '#fff' : '#888'}; cursor: pointer; padding: 2px 5px; border-radius: 3px;"><i class="fas ${visIcon}"></i> <span class="vis-text">${visText}</span></button>
             </div>`;
         }
 
@@ -220,6 +234,10 @@ class TensionPoolUI {
             div.style.zIndex = "100";
             div.style.pointerEvents = "auto"; // Ensure clicks register even if parent ignores them
 
+            if (!game.user.isGM && !game.settings.get("tension-pool", "ShowTrackerToPlayers")) {
+                div.style.display = "none";
+            }
+
             // Add simple invisible drag handle
             div.innerHTML = `<header class="window-header" style="height: 15px; cursor: grab; background: rgba(0,0,0,0.5); border-radius: 4px 4px 0 0; opacity: 0; transition: opacity 0.2s; pointer-events: auto;"></header>` + tensionHtml;
 
@@ -238,7 +256,9 @@ class TensionPoolUI {
 
                     if (curDice < maxDice - 1) {
                         // Regular add & roll
-                        game.settings.set("tension-pool", "diceinpool", curDice + 1);
+                        await game.settings.set("tension-pool", "diceinpool", curDice + 1);
+                        await updatedisplay(curDice + 1);
+                        Hooks.call("tension-poolChange", curDice + 1);
                         rollpool(curDice + 1, "Die added and Pool Rolled");
                     } else {
                         // Pool is at 5 out of 6
@@ -249,6 +269,37 @@ class TensionPoolUI {
                     }
                 });
                 div.querySelector('#tp-btn-clear').addEventListener('click', (e) => { e.stopPropagation(); emptypool(); });
+                div.querySelector('#tp-btn-vis').addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    let currentVis = game.settings.get("tension-pool", "ShowTrackerToPlayers");
+                    let newVis = !currentVis;
+                    await game.settings.set("tension-pool", "ShowTrackerToPlayers", newVis);
+
+                    let btn = e.currentTarget;
+                    if (!btn || btn.tagName !== 'BUTTON') {
+                        btn = e.target.closest('button');
+                    }
+                    if (!btn) return;
+                    let icon = btn.querySelector('i');
+                    let text = btn.querySelector('.vis-text');
+                    if (newVis) {
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                        btn.style.color = '#fff';
+                        btn.title = "Hide from Players";
+                        if (text) text.innerText = "Shown";
+                    } else {
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                        btn.style.color = '#888';
+                        btn.title = "Show to Players";
+                        if (text) text.innerText = "Hidden";
+                    }
+
+                    game.socket.emit('module.tension-pool', {
+                        message: newVis, datatype: "updatevisibility"
+                    });
+                });
             }
 
             document.body.appendChild(div);
@@ -435,7 +486,7 @@ async function rollpool(dice, message, dicesize) {
                 let message = "Currently you do not have Dice So Nice installed, or it is not enabled, but you have the Visual Dice Effects Enabled.  Please install and enable Dice So Nice to use the visual effects."
                 ChatMessage.create({
                     whisper: ChatMessage.getWhisperRecipients("GM"),
-                    content: message,
+                    content: `<span>${message}</span>`,
                     speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" })
                 }, {});
             } else {
@@ -459,7 +510,7 @@ async function rollpool(dice, message, dicesize) {
                 outcometext += '<img src="modules/tension-pool/images/Danger_black.webp" alt="!" width="28" height="28" style="border: none;">'
                 rolltext += '<li class="roll die ' + dicesize + ' min">!</li>'
             } else {
-                outcometext += '<img src="modules/tension-pool/images/BlankDie.webp" alt="-" width="28" height="28" style="border: none;">'
+                outcometext += '<img src="modules/tension-pool/images/BlankDie.webp" alt="-" width="28" height="28" style="border: none; filter: invert(1);">'
                 rolltext += '<li class="roll die ' + dicesize + '">&nbsp;</li>'
             }
         }
@@ -467,9 +518,9 @@ async function rollpool(dice, message, dicesize) {
 
         let mess;
         if (complication) {
-            mess = game.settings.get("tension-pool", 'DangerMessage');
+            mess = `<span>${game.settings.get("tension-pool", 'DangerMessage')}</span>`;
         } else {
-            mess = "The tension is rising...";
+            mess = `<span>The tension is rising...</span>`;
         }
 
         mess += `<div class="dice-roll">
@@ -611,7 +662,7 @@ async function rollpoolandretain(dice, message, dicesize) {
                 let message = "Currently you do not have Dice So Nice installed, or it is not enabled, but you have the Visual Dice Effects Enabled.  Please install and enable Dice So Nice to use the visual effects."
                 ChatMessage.create({
                     whisper: ChatMessage.getWhisperRecipients("GM"),
-                    content: message,
+                    content: `<span>${message}</span>`,
                     speaker: ChatMessage.getSpeaker({ alias: "Tension Pool" })
                 }, {});
             } else {
@@ -641,9 +692,9 @@ async function rollpoolandretain(dice, message, dicesize) {
 
         let mess;
         if (complication) {
-            mess = game.settings.get("tension-pool", 'DangerMessage');
+            mess = `<span>${game.settings.get("tension-pool", 'DangerMessage')}</span>`;
         } else {
-            mess = "The tension is rising...";
+            mess = `<span>The tension is rising...</span>`;
         }
 
         mess += `<div class="dice-roll">
@@ -853,7 +904,7 @@ async function TensionTimerConfig() {
                             " " + datedisplaydata.monthName + " " + datedisplaydata.yearPrefix + datedisplaydata.year + datedisplaydata.yearPostfix + ". " +
                             "This will take " + realworldgap + " seconds in the real world (the clock is currently " + clockstatus + ")."
 
-                        ChatMessage.create({ whisper: ChatMessage.getWhisperRecipients("GM"), content: message, speaker: ChatMessage.getSpeaker({ alias: "Tension Timer" }) }, {});
+                        ChatMessage.create({ whisper: ChatMessage.getWhisperRecipients("GM"), content: `<span>${message}</span>`, speaker: ChatMessage.getSpeaker({ alias: "Tension Timer" }) }, {});
                     },
                 },
                 stop: {
@@ -901,7 +952,7 @@ async function processtimeupdate() {
             let message = "The next die drop will take " + realworldgap + " seconds in the real world."
             ChatMessage.create({
                 whisper: ChatMessage.getWhisperRecipients("GM"),
-                content: message,
+                content: `<span>${message}</span>`,
                 speaker: ChatMessage.getSpeaker({ alias: "Tension Timer" })
             }, {});
 
