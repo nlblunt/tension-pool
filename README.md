@@ -1,10 +1,10 @@
 # Tension Pool
 
-[![GitHub release](https://img.shields.io/github/release/sdoehren/tension-pool.svg)](https://GitHub.com/sdoehren/tension-pool/releases/)
-[![GitHub issues](https://img.shields.io/github/issues/SDoehren/tension-pool/bug)](https://GitHub.com/sdoehren/tension-pool/issues/)
+[![GitHub release](https://img.shields.io/github/release/nlblunt/tension-pool.svg)](https://GitHub.com/nlblunt/tension-pool/releases/)
+[![GitHub issues](https://img.shields.io/github/issues/nlblunt/tension-pool/bug)](https://GitHub.com/nlblunt/tension-pool/issues/)
 
 
-[![Forge Install %](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Ftension-pool)](https://GitHub.com/sdoehren/tension-pool/releases/)
+[![Forge Install %](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Ftension-pool)](https://GitHub.com/nlblunt/tension-pool/releases/)
 [![Github all releases](https://img.shields.io/github/downloads/sdoehren/tension-pool/total.svg)](https://GitHub.com/sdoehren/tension-pool/releases/)
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/sdoehren/tension-pool/latest/total.svg)](https://GitHub.com/sdoehren/tension-pool/releases/)
 
@@ -26,7 +26,7 @@ I will continue to develop Tension Pool for my own games so major bugs will be f
 
 Available on the Forge and via the module directory within Foundry.
 
-Alternatively install via the manifest url: https://github.com/SDoehren/tension-pool/releases/latest/download/module.json
+Alternatively install via the manifest url: https://github.com/nlblunt/tension-pool/releases/latest/download/module.json
 
 ## Instructions
 
