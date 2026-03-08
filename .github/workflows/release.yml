@@ -1,0 +1,35 @@
+name: Release Creation
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get Version
+        shell: bash
+        id: get-version
+        run: echo "version=$(node -e "console.log(require('./module.json').version);")" >> $GITHUB_OUTPUT
+
+      - name: Create Zip
+        run: |
+          zip -r ./module.zip module.json README.md LICENSE\ \ CC-BY-NC-SA-4.0.md Changelog.md api.md src/ packs/ templates/ images/
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ steps.get-version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            module.json
+            module.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
