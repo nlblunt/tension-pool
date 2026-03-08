@@ -3,7 +3,7 @@
   "name": "tension-pool",
   "title": "Tension Pool",
   "description": "Tension Pool is a Foundry Implementation and Evolution of the Angry GM's idea of Time Pools/Tension Pools",
-  "version": "13.0.3",
+  "version": "13.0.4",
   "authors": [
     {
       "name": "SDoehren"
@@ -35,6 +35,12 @@
       "label": "Tension Pool",
       "path": "./packs/tension-pool.db",
       "type": "Macro"
+    },
+    {
+      "name": "complications",
+      "label": "Tension Pool Complications",
+      "path": "packs/complications",
+      "type": "RollTable"
     }
   ]
 }
