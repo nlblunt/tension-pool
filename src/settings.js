@@ -17,6 +17,14 @@ export const registerSettings = function () {
         type: Number
     });
 
+    game.settings.register("tension-pool", "ShowTrackerToPlayers", {
+        name: "Show tracker to players?",
+        scope: "world",
+        config: false,
+        default: true,
+        type: Boolean
+    });
+
     game.settings.register("tension-pool", "emptythepool", {
         name: "Empty the pool on non-full roll?",
         hint: "Should the pool be emptied if it is rolled before Max Dice in Pool is reached.",
